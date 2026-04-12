@@ -1,0 +1,8 @@
+# Local documentation: keep only phase planning docs tracked
+docs/*
+!docs/plans/
+!docs/plans/**
+ejemplo/
+
+# Node dependencies
+node_modules/
