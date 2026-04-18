@@ -2,7 +2,12 @@
 docs/*
 !docs/plans/
 !docs/plans/**
+!docs/operacion/
+!docs/operacion/**/*.md
 ejemplo/
+
+# Local machine overrides
+config/config.local.php
 
 # Node dependencies
 node_modules/
