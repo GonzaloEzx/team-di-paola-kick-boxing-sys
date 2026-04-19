@@ -1,7 +1,8 @@
 # Fase 04.5 — Sincronización local / Hostinger previa a Fase 5
 
-> Estado: en ejecución
-> Fecha: 2026-04-18
+> Estado: completada
+> Fecha inicio: 2026-04-18
+> Fecha cierre: 2026-04-19
 > Alcance: preparar el ambiente de Hostinger (`skyneosec.kescom.com.ar`) para recibir el código del proyecto Team Di Paola y ejecutar Fase 5.
 
 ## 1. Motivación
@@ -52,41 +53,50 @@ No se toca `docs/plans/fase-03.md`: es histórico de la fase ya completada. Los 
 - [x] Actualizar `docs/operacion/deploy-ssh-git-setup-team-di-paola.md`.
 - [x] Actualizar `docs/operacion/deploy-runbook-hostinger-team-di-paola.md`.
 - [x] Crear `docs/plans/fase-04.5.md` (este archivo).
-- [ ] `git add` + commit + push a `main`.
+- [x] `git add` + commit + push a `main` (commits `9a0eeef` y `06c5c42`).
 
 ### Parte B — Clonar repo en el document root de Hostinger
 
-- [ ] Clonar el repo en `~/domains/kescom.com.ar/public_html/skyneosec/` (document root vacío, sin backup porque no hay nada a preservar).
-- [ ] Copiar `config/config.hostinger.example.php` → `config/config.local.php` en el server.
-- [ ] Editar `config/config.local.php` en el server y reemplazar `CAMBIAR_EN_SERVIDOR` por la password real (lo hace el usuario).
-- [ ] Verificar con `curl` que `https://skyneosec.kescom.com.ar/` devuelve home HTML con ENV: production.
+- [x] Clonar el repo en `~/domains/kescom.com.ar/public_html/skyneosec/`.
+- [x] Copiar `config/config.hostinger.example.php` → `config/config.local.php` en el server.
+- [x] Editar `config/config.local.php` en el server con la password real (sed remoto).
+- [x] Verificar con `curl` que `https://skyneosec.kescom.com.ar/` devuelve home HTML con ENV: production.
 
 ### Parte C — Migraciones en DB Hostinger
 
-- [ ] Aplicar en orden `001` → `005` sobre la base `u347774250_skyneosec`.
-- [ ] Verificar que `https://skyneosec.kescom.com.ar/?route=api/health` devuelve `db: ok`.
+- [x] Aplicar en orden `001` → `005` sobre la base `u347774250_skyneosec`.
+- [x] Verificar que `https://skyneosec.kescom.com.ar/?route=api/health` devuelve `db: ok`.
 
 ### Parte D — Limpieza
 
 - [ ] (Opcional) Eliminar `~/public_html/skyneosec/` del server (está vacío y confunde).
-- [ ] Marcar Fase 4.5 como completada, arrancar Fase 5.
+- [x] Marcar Fase 4.5 como completada.
 
 ## 5. Criterios QA
 
-| Criterio | Cómo validar |
-|---|---|
-| El dominio sirve el nuevo código | `curl -sI https://skyneosec.kescom.com.ar/` devuelve 200 y `curl -s .../?route=api/health` JSON con `app:ok` |
-| La DB remota responde | `api/health` devuelve `db: ok` |
-| El entorno se detecta correctamente | Home muestra `ENV: production` |
-| `config/config.local.php` no está en Git remoto | `ssh ... "cd docroot && git status"` debe estar limpio después del setup |
-| Migraciones aplicadas | `SHOW TABLES` en `u347774250_skyneosec` muestra las 21 tablas esperadas |
-| Roles seed presentes | `SELECT codigo FROM roles` devuelve `admin`, `recepcion`, `profesor`, `alumno` |
+| Criterio | Cómo validar | Estado |
+|---|---|---|
+| El dominio sirve el nuevo código | `curl -sI https://skyneosec.kescom.com.ar/` devuelve 200 | OK |
+| `api/health` responde JSON correcto | `curl -s .../?route=api/health` devuelve `{"success":true,"data":{"app":"ok","db":"ok","environment":"production"}}` | OK |
+| `config/config.local.php` no se pushea | `ssh ... "cd docroot && git status"` limpio después del setup | OK |
+| Migraciones aplicadas | `SHOW TABLES` en `u347774250_skyneosec` muestra las 21 tablas | OK |
+| Roles seed presentes | `SELECT codigo FROM roles` devuelve `admin`, `recepcion`, `profesor`, `alumno` | OK |
 
-## 6. Riesgos y deuda asumida
+## 6. Resultado final verificado
+
+```
+GET https://skyneosec.kescom.com.ar/?route=api/health
+HTTP/1.1 200 OK
+{"success":true,"data":{"app":"ok","db":"ok","environment":"production"}}
+```
+
+Ambiente online funcional. Próximo paso: Fase 5 — Auth backend.
+
+## 7. Riesgos y deuda asumida
 
 | Riesgo | Decisión |
 |---|---|
 | Password de DB queda en `config/config.local.php` en disco del server | Aceptado. Es el estándar de este proyecto. `.htaccess` bloquea acceso web a `config/`. |
-| El `.htaccess` padre (`~/public_html/.htaccess`) hace URL rewriting de `/foo` → `/foo.php` | Aplica a todo `public_html`, no al subdominio (`~/domains/kescom.com.ar/public_html/skyneosec`). No afecta. |
+| El `.htaccess` padre (`~/public_html/.htaccess`) hace URL rewriting de `/foo` → `/foo.php` | No afecta, aplica a otro directorio. |
 | Sin tracking automático de migraciones | Aceptado. Manual por ahora, se agrega tabla `schema_migrations` cuando el volumen lo justifique. |
 | Cache 301 en browsers antiguos que usaron el sistema anterior | Aceptado. Se resuelve con incógnito o clear site data. No hay forma server-side de forzar el unlearning del 301. |
