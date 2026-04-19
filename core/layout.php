@@ -9,8 +9,12 @@ function layout_header(array $opts = []): void
     $body_class = isset($opts['body_class']) ? (string) $opts['body_class'] : '';
     $user = isset($opts['user']) && is_array($opts['user']) ? $opts['user'] : null;
 
-    $css_tokens = base_url('assets/css/tokens.css');
-    $css_base = base_url('assets/css/base.css');
+    $css_tokens_path = APP_ROOT . '/assets/css/tokens.css';
+    $css_base_path = APP_ROOT . '/assets/css/base.css';
+    $ver_tokens = is_file($css_tokens_path) ? (string) filemtime($css_tokens_path) : '0';
+    $ver_base = is_file($css_base_path) ? (string) filemtime($css_base_path) : '0';
+    $css_tokens = base_url('assets/css/tokens.css') . '?v=' . $ver_tokens;
+    $css_base = base_url('assets/css/base.css') . '?v=' . $ver_base;
     $logo_dpc = base_url('assets/img/logo-dpc.jpg');
     $dashboard_url = base_url('?route=admin/dashboard');
     $logout_url = base_url('?route=auth/logout');
