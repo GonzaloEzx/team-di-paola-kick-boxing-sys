@@ -4,6 +4,8 @@ docs/*
 !docs/plans/**
 !docs/operacion/
 !docs/operacion/**/*.md
+!docs/brand/
+!docs/brand/**/*.md
 ejemplo/
 
 # Local machine overrides
