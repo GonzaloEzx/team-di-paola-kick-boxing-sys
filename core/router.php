@@ -51,6 +51,65 @@ function dispatch_route(): void
             admin_dashboard_index();
             return;
 
+        case 'admin/alumnos':
+            require_once APP_ROOT . '/modules/alumnos/alumnos_controller.php';
+            alumnos_index();
+            return;
+
+        case 'admin/alumnos/nuevo':
+            require_once APP_ROOT . '/modules/alumnos/alumnos_controller.php';
+            if ($method === 'POST') {
+                alumnos_create_submit();
+            } else {
+                alumnos_new_form();
+            }
+            return;
+
+        case 'admin/alumnos/editar':
+            require_once APP_ROOT . '/modules/alumnos/alumnos_controller.php';
+            if ($method === 'POST') {
+                alumnos_update_submit();
+            } else {
+                alumnos_edit_form();
+            }
+            return;
+
+        case 'admin/alumnos/ver':
+            require_once APP_ROOT . '/modules/alumnos/alumnos_controller.php';
+            alumnos_show();
+            return;
+
+        case 'admin/alumnos/estado':
+            require_once APP_ROOT . '/modules/alumnos/alumnos_controller.php';
+            alumnos_change_state_submit();
+            return;
+
+        case 'api/alumnos':
+            require_once APP_ROOT . '/modules/alumnos/alumnos_controller.php';
+            if ($method === 'POST') {
+                require_once APP_ROOT . '/api/alumnos/create.php';
+                api_alumnos_create();
+            } else {
+                require_once APP_ROOT . '/api/alumnos/list.php';
+                api_alumnos_list();
+            }
+            return;
+
+        case 'api/alumnos/show':
+            require_once APP_ROOT . '/api/alumnos/show.php';
+            api_alumnos_show();
+            return;
+
+        case 'api/alumnos/update':
+            require_once APP_ROOT . '/api/alumnos/update.php';
+            api_alumnos_update();
+            return;
+
+        case 'api/alumnos/estado':
+            require_once APP_ROOT . '/api/alumnos/change_state.php';
+            api_alumnos_change_state();
+            return;
+
         default:
             route_not_found($route);
             return;
