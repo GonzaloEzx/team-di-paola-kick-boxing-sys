@@ -116,9 +116,58 @@ layout_header([
 <h2 class="tdp-detail-section-title">Historial operativo</h2>
 
 <div class="tdp-detail-grid">
-    <section class="tdp-detail-card tdp-detail-card--placeholder">
-        <h2>Membresia</h2>
-        <p class="tdp-muted">Modulo pendiente (Fase 8 - Planes y Membresias).</p>
+    <section class="tdp-detail-card">
+        <h2>Membresia actual</h2>
+        <?php if ($membresia_actual === null): ?>
+            <p class="tdp-muted" style="margin:0 0 .75rem;">Sin membresia viva.</p>
+            <?php if ($estado === 'activo'): ?>
+                <a class="tdp-btn" href="<?= h(base_url('?route=admin/membresias/nueva&alumno_id=' . (int) $alumno['id'])) ?>">Nueva membresia</a>
+            <?php else: ?>
+                <p class="tdp-muted" style="font-size:.85rem;">Activa al alumno para asignar una membresia.</p>
+            <?php endif; ?>
+        <?php else: ?>
+            <dl class="tdp-dl">
+                <dt>Plan</dt><dd><?= h((string) $membresia_actual['plan_nombre']) ?></dd>
+                <dt>Estado</dt>
+                <dd>
+                    <span class="tdp-badge tdp-badge--<?= h((string) $membresia_actual['estado']) ?>">
+                        <?= h((string) $membresia_actual['estado']) ?>
+                    </span>
+                </dd>
+                <dt>Vigencia</dt>
+                <dd>
+                    <?= h((string) $format_date((string) $membresia_actual['fecha_inicio'])) ?>
+                    &rarr;
+                    <?= h((string) $format_date((string) $membresia_actual['fecha_fin'])) ?>
+                </dd>
+                <dt>Tipo</dt>
+                <dd>
+                    <?php if ($membresia_actual['plan_tipo_acceso'] === 'libre'): ?>
+                        Libre
+                    <?php else: ?>
+                        <?= (int) ($membresia_actual['clases_disponibles'] ?? 0) ?> clase(s) disponibles
+                    <?php endif; ?>
+                </dd>
+            </dl>
+            <?php if (!empty($periodos_actual)): ?>
+                <h3 style="font-size:.95rem; margin:.75rem 0 .35rem; font-family:'Oswald', sans-serif; letter-spacing:.05em; text-transform:uppercase;">Periodo actual</h3>
+                <?php $p = $periodos_actual[0]; ?>
+                <p class="tdp-muted" style="font-size:.9rem; margin:0 0 .75rem;">
+                    <?= h((string) $format_date((string) $p['periodo_desde'])) ?>
+                    &rarr;
+                    <?= h((string) $format_date((string) $p['periodo_hasta'])) ?>
+                    &middot; <strong>$ <?= number_format((float) $p['saldo'], 2, ',', '.') ?></strong>
+                    <span class="tdp-badge tdp-badge--<?= h((string) $p['estado']) ?>"><?= h((string) $p['estado']) ?></span>
+                </p>
+            <?php endif; ?>
+            <form method="post"
+                  action="<?= h(base_url('?route=admin/membresias/cancelar&id=' . (int) $membresia_actual['id'])) ?>"
+                  onsubmit="return confirm('Cancelar esta membresia? Los periodos pendientes se anulan.');"
+                  style="margin:0;">
+                <input type="hidden" name="csrf_token" value="<?= h($csrf_token) ?>">
+                <button type="submit" class="tdp-topbar__logout" style="cursor:pointer;">Cancelar membresia</button>
+            </form>
+        <?php endif; ?>
     </section>
     <section class="tdp-detail-card tdp-detail-card--placeholder">
         <h2>Pagos recientes</h2>
@@ -129,5 +178,33 @@ layout_header([
         <p class="tdp-muted">Modulo pendiente (Fase 10 - Asistencias).</p>
     </section>
 </div>
+
+<?php if (!empty($membresias_historial)): ?>
+    <h2 class="tdp-detail-section-title">Historial de membresias</h2>
+    <div class="tdp-table-wrap">
+        <table class="tdp-table">
+            <thead>
+                <tr>
+                    <th>Plan</th>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                    <th>Estado</th>
+                    <th>Creada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($membresias_historial as $m): ?>
+                    <tr>
+                        <td><?= h((string) $m['plan_nombre']) ?></td>
+                        <td><?= h((string) $format_date((string) $m['fecha_inicio'])) ?></td>
+                        <td><?= h((string) $format_date((string) $m['fecha_fin'])) ?></td>
+                        <td><span class="tdp-badge tdp-badge--<?= h((string) $m['estado']) ?>"><?= h((string) $m['estado']) ?></span></td>
+                        <td><?= h((string) $format_date((string) $m['created_at'])) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif; ?>
 
 <?php layout_footer(); ?>

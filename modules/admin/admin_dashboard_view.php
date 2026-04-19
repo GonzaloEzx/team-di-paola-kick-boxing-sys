@@ -2,7 +2,8 @@
 
 $modulos = [
     ['icon' => 'AL', 'titulo' => 'Alumnos', 'desc' => 'Alta, edicion y fichas de alumnos.', 'estado' => 'Disponible', 'href' => base_url('?route=admin/alumnos')],
-    ['icon' => 'MB', 'titulo' => 'Membresias', 'desc' => 'Planes, periodos y renovaciones.', 'estado' => 'En construccion', 'href' => null],
+    ['icon' => 'PL', 'titulo' => 'Planes', 'desc' => 'Catalogo de planes y precios.', 'estado' => 'Disponible', 'href' => base_url('?route=admin/planes')],
+    ['icon' => 'MB', 'titulo' => 'Membresias', 'desc' => 'Alta desde la ficha de cada alumno.', 'estado' => 'Desde ficha alumno', 'href' => base_url('?route=admin/alumnos')],
     ['icon' => 'PG', 'titulo' => 'Pagos', 'desc' => 'Cobro de cuotas y comprobantes.', 'estado' => 'En construccion', 'href' => null],
     ['icon' => 'AS', 'titulo' => 'Asistencias', 'desc' => 'Check-in de clases grupales y libre.', 'estado' => 'En construccion', 'href' => null],
     ['icon' => 'CL', 'titulo' => 'Clases', 'desc' => 'Grilla, horarios y actividades.', 'estado' => 'En construccion', 'href' => null],

@@ -170,9 +170,19 @@ function alumnos_show(): void
         return;
     }
 
+    require_once APP_ROOT . '/modules/membresias/membresias_controller.php';
+    $membresia_actual = membresias_fetch_actual_viva($id);
+    $membresias_historial = membresias_fetch_by_alumno($id);
+    $periodos_actual = $membresia_actual !== null
+        ? membresias_fetch_periodos((int) $membresia_actual['id'])
+        : [];
+
     render_view('alumnos/alumnos_detail_view.php', [
         'user' => $user,
         'alumno' => $alumno,
+        'membresia_actual' => $membresia_actual,
+        'membresias_historial' => $membresias_historial,
+        'periodos_actual' => $periodos_actual,
         'csrf_token' => csrf_token(),
         'flash' => flash_pop('alumnos'),
     ]);
@@ -495,23 +505,4 @@ function alumnos_update_state(int $id, string $estado): bool
     return $stmt->rowCount() > 0;
 }
 
-// --------------------------------------------------------------------
-// Flash (session-based one-shot messages)
-// --------------------------------------------------------------------
-
-function flash_push(string $key, array $payload): void
-{
-    auth_start_session();
-    $_SESSION['_flash'][$key][] = $payload;
-}
-
-function flash_pop(string $key): array
-{
-    auth_start_session();
-    if (!isset($_SESSION['_flash'][$key])) {
-        return [];
-    }
-    $items = $_SESSION['_flash'][$key];
-    unset($_SESSION['_flash'][$key]);
-    return $items;
-}
+// Flash helpers moved to core/helpers.php so every module can use them.

@@ -110,6 +110,90 @@ function dispatch_route(): void
             api_alumnos_change_state();
             return;
 
+        case 'admin/planes':
+            require_once APP_ROOT . '/modules/planes/planes_controller.php';
+            planes_index();
+            return;
+
+        case 'admin/planes/nuevo':
+            require_once APP_ROOT . '/modules/planes/planes_controller.php';
+            if ($method === 'POST') {
+                planes_create_submit();
+            } else {
+                planes_new_form();
+            }
+            return;
+
+        case 'admin/planes/editar':
+            require_once APP_ROOT . '/modules/planes/planes_controller.php';
+            if ($method === 'POST') {
+                planes_update_submit();
+            } else {
+                planes_edit_form();
+            }
+            return;
+
+        case 'admin/planes/toggle':
+            require_once APP_ROOT . '/modules/planes/planes_controller.php';
+            planes_toggle_submit();
+            return;
+
+        case 'api/planes':
+            require_once APP_ROOT . '/modules/planes/planes_controller.php';
+            if ($method === 'POST') {
+                require_once APP_ROOT . '/api/planes/create.php';
+                api_planes_create();
+            } else {
+                require_once APP_ROOT . '/api/planes/list.php';
+                api_planes_list();
+            }
+            return;
+
+        case 'api/planes/show':
+            require_once APP_ROOT . '/api/planes/show.php';
+            api_planes_show();
+            return;
+
+        case 'api/planes/update':
+            require_once APP_ROOT . '/api/planes/update.php';
+            api_planes_update();
+            return;
+
+        case 'api/planes/toggle':
+            require_once APP_ROOT . '/api/planes/toggle.php';
+            api_planes_toggle();
+            return;
+
+        case 'admin/membresias/nueva':
+            require_once APP_ROOT . '/modules/membresias/membresias_controller.php';
+            if ($method === 'POST') {
+                membresias_create_submit();
+            } else {
+                membresias_new_form();
+            }
+            return;
+
+        case 'admin/membresias/cancelar':
+            require_once APP_ROOT . '/modules/membresias/membresias_controller.php';
+            membresias_cancel_submit();
+            return;
+
+        case 'api/membresias':
+            require_once APP_ROOT . '/modules/membresias/membresias_controller.php';
+            if ($method === 'POST') {
+                require_once APP_ROOT . '/api/membresias/create.php';
+                api_membresias_create();
+            } else {
+                require_once APP_ROOT . '/api/membresias/list_by_alumno.php';
+                api_membresias_list_by_alumno();
+            }
+            return;
+
+        case 'api/membresias/cancelar':
+            require_once APP_ROOT . '/api/membresias/cancel.php';
+            api_membresias_cancel();
+            return;
+
         default:
             route_not_found($route);
             return;

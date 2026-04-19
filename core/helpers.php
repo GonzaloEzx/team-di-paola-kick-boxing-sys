@@ -26,3 +26,28 @@ function redirect(string $url, int $statusCode = 302): void
     header('Location: ' . $url);
     exit;
 }
+
+function flash_push(string $key, array $payload): void
+{
+    if (function_exists('auth_start_session')) {
+        auth_start_session();
+    } elseif (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $_SESSION['_flash'][$key][] = $payload;
+}
+
+function flash_pop(string $key): array
+{
+    if (function_exists('auth_start_session')) {
+        auth_start_session();
+    } elseif (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['_flash'][$key])) {
+        return [];
+    }
+    $items = $_SESSION['_flash'][$key];
+    unset($_SESSION['_flash'][$key]);
+    return $items;
+}
