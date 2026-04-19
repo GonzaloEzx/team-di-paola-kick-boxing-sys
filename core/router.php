@@ -47,8 +47,8 @@ function dispatch_route(): void
             return;
 
         case 'admin/dashboard':
-            require_rol(['admin', 'recepcion']);
-            route_admin_dashboard();
+            require_once APP_ROOT . '/modules/admin/admin_controller.php';
+            admin_dashboard_index();
             return;
 
         default:
@@ -75,25 +75,6 @@ function route_api_health(): void
         'db' => app_db_status(),
         'environment' => ENVIRONMENT,
     ]);
-}
-
-function route_admin_dashboard(): void
-{
-    header('Content-Type: text/html; charset=utf-8');
-
-    echo '<!doctype html>';
-    echo '<html lang="es">';
-    echo '<head>';
-    echo '<meta charset="utf-8">';
-    echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
-    echo '<title>Dashboard admin</title>';
-    echo '</head>';
-    echo '<body>';
-    echo '<main>';
-    echo '<h1>Dashboard admin en construcción</h1>';
-    echo '</main>';
-    echo '</body>';
-    echo '</html>';
 }
 
 function route_not_found(string $route): void

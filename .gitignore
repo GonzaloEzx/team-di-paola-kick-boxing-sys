@@ -13,3 +13,8 @@ config/config.local.php
 
 # Node dependencies
 node_modules/
+
+# Playwright MCP artifacts and ad-hoc screenshots in root
+.playwright-mcp/
+/*.png
+
