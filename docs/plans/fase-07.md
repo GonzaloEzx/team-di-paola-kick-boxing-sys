@@ -1,7 +1,8 @@
 # Fase 07 — CRUD Alumnos
 
-> Estado: en progreso
+> Estado: completada
 > Fecha inicio: 2026-04-19
+> Fecha cierre: 2026-04-19
 > Alcance: primer módulo de negocio. ABM + listado + detalle de alumnos.
 
 ## 1. Objetivo
@@ -113,21 +114,27 @@ modules/admin/admin_dashboard_view.php  # tarjeta Alumnos activa
 
 | Criterio | Local | Prod |
 |---|---|---|
-| Migración 006 aplicada sin errores | — | — |
-| Listado pagina 20 por página con prev/next | — | — |
-| Búsqueda por nombre / apellido / DNI / email devuelve resultados correctos | — | — |
-| Filtro por estado filtra bien | — | — |
-| Alta con datos válidos crea alumno y redirige a detalle | — | — |
-| Alta con DNI duplicado muestra error sin crear | — | — |
-| Alta con nombre vacío devuelve error | — | — |
-| Edición precarga valores y guarda cambios | — | — |
-| Cambio de estado actualiza el alumno y muestra badge correcto | — | — |
-| Detalle renderiza 4 secciones + 3 placeholders | — | — |
-| API GET /api/alumnos con `q=` filtra | — | — |
-| API POST /api/alumnos crea y devuelve `{success, data:{id}}` | — | — |
-| API POST con DNI duplicado devuelve 409 `DNI_DUPLICADO` | — | — |
-| Rutas protegidas con `require_rol` bloquean sin permisos | — | — |
-| Compatibilidad PHP 7.4 | — | — |
+| Migración 006 aplicada sin errores | OK | OK |
+| Listado pagina 20 por página con prev/next | OK | OK |
+| Búsqueda por nombre / apellido / DNI / email devuelve resultados correctos | OK | OK |
+| Filtro por estado filtra bien | OK | — |
+| Alta con datos válidos crea alumno y redirige a detalle | OK | OK |
+| Alta con DNI duplicado muestra error sin crear | OK | — |
+| Alta con nombre vacío devuelve error | OK | — |
+| Edición precarga valores y guarda cambios | OK | — |
+| Cambio de estado actualiza el alumno y muestra badge correcto | OK | — |
+| Detalle renderiza 4 secciones + 3 placeholders | OK | — |
+| API GET /api/alumnos con `q=` filtra | OK | OK |
+| API POST /api/alumnos crea y devuelve `{success, data:{id}}` | OK | OK |
+| API POST con DNI duplicado devuelve 409 `DNI_DUPLICADO` | OK | — |
+| Rutas protegidas con `require_rol` bloquean sin permisos | OK | — |
+| Compatibilidad PHP 7.4 | OK | OK |
+
+Items sin verificación en prod validados solo en local por eficiencia (mismo código). Flow end-to-end (listado + alta + ficha + búsqueda) verificado en prod.
+
+## 11. Bugs cazados durante ejecución
+
+- **Placeholder PDO reutilizado**: la query de listado usaba `:q` 5 veces en el mismo `WHERE` (nombre, apellido, dni, email, telefono). Con `PDO::ATTR_EMULATE_PREPARES = false` MySQL no permite reusar el mismo placeholder nombrado. Resuelto con 5 nombres distintos (`:q_nombre`, `:q_apellido`, etc.) bindeando el mismo valor.
 
 ## 9. Deuda asumida
 
