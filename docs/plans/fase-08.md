@@ -1,8 +1,8 @@
 # Fase 08 — Planes y Membresías
 
-> Estado: en verificación prod
+> Estado: cerrada
 > Fecha inicio: 2026-04-19
-> Fecha cierre local: 2026-04-19
+> Fecha cierre: 2026-04-19
 > Alcance: ABM de planes + alta / cancelación de membresías + generación del primer periodo liquidable. Reemplaza placeholder "Membresía" en la ficha del alumno.
 
 ## 1. Objetivo
@@ -146,16 +146,16 @@ core/router.php                          # + rutas
 
 | Criterio | Local | Prod |
 |---|---|---|
-| Seed 007 aplicado y 3 planes visibles | OK | — |
-| ABM planes funciona (alta, edición, toggle) | OK | — |
-| Form nueva membresía muestra solo planes activos | OK | — |
-| Alta de membresía inserta membresía + periodo en una transacción | OK | — |
-| Segunda membresía sobre alumno con una viva devuelve `MEMBRESIA_EXISTENTE` | OK | — |
-| Cancelar membresía anula periodos pendientes y mantiene pagados | OK | — |
-| Ficha del alumno muestra membresía actual + histórico | OK | — |
-| Validación: `cantidad_clases` requerido si `tipo_acceso=cantidad_clases` | OK | — |
-| Planes inactivos no aparecen en select de nueva membresía | OK | — |
-| API `GET /api/membresias?alumno_id=X` devuelve lista | OK | — |
+| Seed 007 aplicado y 3 planes visibles | OK | OK |
+| ABM planes funciona (alta, edición, toggle) | OK | OK |
+| Form nueva membresía muestra solo planes activos | OK | OK |
+| Alta de membresía inserta membresía + periodo en una transacción | OK | OK |
+| Segunda membresía sobre alumno con una viva devuelve `MEMBRESIA_EXISTENTE` | OK | OK |
+| Cancelar membresía anula periodos pendientes y mantiene pagados | OK | OK |
+| Ficha del alumno muestra membresía actual + histórico | OK | OK |
+| Validación: `cantidad_clases` requerido si `tipo_acceso=cantidad_clases` | OK | OK |
+| Planes inactivos no aparecen en select de nueva membresía | OK | OK |
+| API `GET /api/membresias?alumno_id=X` devuelve lista | OK | OK |
 | API `POST /api/membresias` con 2a activa devuelve 409 | OK (guard en controller idéntico) | — |
 | Compatibilidad PHP 7.4 | OK (sin features 8+) | — |
 
@@ -163,6 +163,7 @@ core/router.php                          # + rutas
 
 | Deuda | Motivo |
 |---|---|
+| CDN Hostinger cachea `base.css` con max-age=1 semana | Mitigado con `?v={filemtime}` en `core/layout.php`. |
 | `fecha_fin` no se recalcula al pagar (aún) | Fase 9 lo agrega. |
 | Sin generar periodos siguientes | Fase 9 o feature posterior. |
 | Sin suspender/reactivar membresía | Fase 9. |
