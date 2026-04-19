@@ -37,10 +37,9 @@ function auth_login_submit(): void
     $result = auth_attempt($email, $password);
 
     if (!$result['ok']) {
-        $error = match ($result['code']) {
-            'USUARIO_INACTIVO' => 'El usuario esta inactivo. Consulta con un administrador.',
-            default => 'Email o contrasena incorrectos.',
-        };
+        $error = $result['code'] === 'USUARIO_INACTIVO'
+            ? 'El usuario esta inactivo. Consulta con un administrador.'
+            : 'Email o contrasena incorrectos.';
 
         render_view('auth/login_view.php', [
             'csrf_token' => csrf_token(),

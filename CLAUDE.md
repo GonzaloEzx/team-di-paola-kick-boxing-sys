@@ -114,6 +114,7 @@ Routing uses `$_GET['route']` — no URL rewriting required for dev. Routes are 
 - New modules go in `modules/{module_name}/` with controller + view files.
 - New API endpoints go in `api/{module_name}/`.
 - Config never committed: `config/config.local.php` is git-ignored.
+- **PHP 7.4 minimum** (Hostinger runs 7.4.33). Avoid PHP 8+ only features: no `match`, no `str_starts_with`/`str_contains`, no nullsafe `?->`, no named arguments, no union/intersection types. Use `strpos() === 0` instead of `str_starts_with`. Use ternary or `if` instead of `match`.
 
 ## Phase Status
 

@@ -56,10 +56,10 @@ function request_wants_json(): bool
 {
     $route = current_route();
 
-    if (str_starts_with($route, 'api/')) {
+    if (strpos($route, 'api/') === 0) {
         return true;
     }
 
     $accept = (string) ($_SERVER['HTTP_ACCEPT'] ?? '');
-    return str_contains($accept, 'application/json');
+    return strpos($accept, 'application/json') !== false;
 }
