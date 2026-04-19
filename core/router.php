@@ -5,6 +5,7 @@ declare(strict_types=1);
 function dispatch_route(): void
 {
     $route = current_route();
+    $method = request_method();
 
     switch ($route) {
         case '':
@@ -21,7 +22,32 @@ function dispatch_route(): void
             route_api_health();
             return;
 
+        case 'auth/login':
+            require_once APP_ROOT . '/modules/auth/auth_controller.php';
+            if ($method === 'POST') {
+                auth_login_submit();
+            } else {
+                auth_login_form();
+            }
+            return;
+
+        case 'auth/logout':
+            require_once APP_ROOT . '/modules/auth/auth_controller.php';
+            auth_logout_handler();
+            return;
+
+        case 'api/auth/login':
+            require_once APP_ROOT . '/api/auth/login.php';
+            api_auth_login();
+            return;
+
+        case 'api/auth/logout':
+            require_once APP_ROOT . '/api/auth/logout.php';
+            api_auth_logout();
+            return;
+
         case 'admin/dashboard':
+            require_rol(['admin', 'recepcion']);
             route_admin_dashboard();
             return;
 
