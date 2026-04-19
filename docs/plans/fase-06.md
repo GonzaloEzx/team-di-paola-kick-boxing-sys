@@ -1,7 +1,8 @@
 # Fase 06 — Identidad visual: layout admin + login pulido
 
-> Estado: en progreso
+> Estado: completada
 > Fecha inicio: 2026-04-19
+> Fecha cierre: 2026-04-19
 > Alcance: aplicar la identidad **Bestia Competitiva** (docs/brand/identidad-marca-deportiva-agresiva.md) al sistema.
 
 ## 1. Objetivo
@@ -72,16 +73,18 @@ core/router.php           # delegar admin/dashboard al controller
 
 | Criterio | Local | Prod |
 |---|---|---|
-| Fuentes Oswald + Inter cargan | — | — |
-| Paleta refleja `#303841` / `#F6C90E` | — | — |
-| Logo insignia visible en login | — | — |
-| Monograma DPC visible en topbar | — | — |
-| Shell admin renderiza con topbar fija | — | — |
-| Dashboard muestra tarjetas placeholder | — | — |
-| Form login validación + error styling | — | — |
-| Logout desde topbar destruye sesión y redirige | — | — |
-| Responsive: login y topbar funcionan <600px | — | — |
-| Compatibilidad PHP 7.4 (sin `match`, `str_*with`, nullsafe) | — | — |
+| Fuentes Oswald + Inter cargan | OK | OK |
+| Paleta refleja `#303841` / `#F6C90E` | OK | OK |
+| Logo insignia visible en login | OK | OK |
+| Monograma DPC visible en topbar | OK | OK |
+| Shell admin renderiza con topbar fija | OK | OK |
+| Dashboard muestra tarjetas placeholder | OK | OK |
+| Form login validación + error styling | OK | — |
+| Logout desde topbar destruye sesión y redirige | OK | OK |
+| Responsive: login y topbar funcionan <600px | OK | — |
+| Compatibilidad PHP 7.4 (sin `match`, `str_*with`, nullsafe) | OK | OK |
+
+Items sin verificación en prod validados solo en local por eficiencia (mismo código ejecutando). El flow completo login + dashboard + logout se verificó end-to-end en prod.
 
 ## 6. Deuda asumida
 
